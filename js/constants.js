@@ -1,0 +1,1 @@
+var AGE_LIMIT = 70;
