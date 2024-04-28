@@ -9,3 +9,7 @@ document.getElementById('ageLimit').addEventListener('input', function (event) {
 document.getElementById('birthdayForm').addEventListener('submit', function (event) {
   event.preventDefault();
   AGE_LIMIT = parseInt(document.getElementById('ageLimit').value);
+
+  if (countdownInterval) {
+    clearInterval(countdownInterval);
+  }
