@@ -1,3 +1,5 @@
+var countdownInterval;
+
 document.getElementById('ageLimit').value = AGE_LIMIT;
 
 document.querySelector('h1 small').textContent = `(AGE limit considering ${AGE_LIMIT} years)`;
@@ -51,3 +53,28 @@ document.getElementById('birthdayForm').addEventListener('submit', function (eve
           </tr>
         `;
   }
+
+  function convertTimeToYearsMonthsDaysHoursMinutesSeconds(time, flag = false) {
+    var years = Math.floor(time / (365 * 24 * 60 * 60));
+    var months = Math.floor((time % (365 * 24 * 60 * 60)) / (30.44 * 24 * 60 * 60));
+    var days = Math.floor((time % (30.44 * 24 * 60 * 60)) / (24 * 60 * 60));
+    var hours = Math.floor((time % (24 * 60 * 60)) / (60 * 60));
+    var minutes = Math.floor((time % (60 * 60)) / 60);
+    var seconds = Math.floor(time % 60);
+
+    var result = "";
+    if (years > 0) {
+      result += `<span class="badge badge-primary">${years} Years</span> `;
+    }
+    if (months > 0) {
+      result += `<span class="badge badge-info">${months} Months</span> `;
+    }
+    if (days > 0) {
+      result += `<span class="badge badge-danger">${days} Days</span> `;
+    }
+    if (flag) {
+      result += `<span class="badge badge-secondary">${hours} Hours</span> `;
+      result += `<span class="badge badge-success">${minutes} Minutes</span> `;
+      result += `<span class="badge badge-warning">${seconds} Seconds</span>`;
+    }
+    return result.trim();
