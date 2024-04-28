@@ -13,3 +13,26 @@ document.getElementById('birthdayForm').addEventListener('submit', function (eve
   if (countdownInterval) {
     clearInterval(countdownInterval);
   }
+
+  var birthdate = new Date(document.getElementById('birthdate').value);
+  var countdownElement = document.getElementById('countdown');
+
+  if (isNaN(birthdate.getTime())) {
+    countdownElement.textContent = 'Please enter a valid birthdate';
+    return;
+  }
+
+  var now = new Date();
+  var timePassed = now.getTime() - birthdate.getTime();
+  var yearsPassed = Math.floor(timePassed / (1000 * 60 * 60 * 24 * 365));
+  var monthsPassed = Math.floor((timePassed % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30.44));
+  var daysPassed = Math.floor((timePassed % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+  var hoursPassed = Math.floor((timePassed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutesPassed = Math.floor((timePassed % (1000 * 60 * 60)) / (1000 * 60));
+  var secondsPassed = Math.floor((timePassed % (1000 * 60)) / 1000);
+
+  var futureDate = new Date(birthdate);
+  futureDate.setFullYear(futureDate.getFullYear() + AGE_LIMIT);
+
+  countdownInterval = setInterval(updateCountdown, 1000);
+
