@@ -36,3 +36,18 @@ document.getElementById('birthdayForm').addEventListener('submit', function (eve
 
   countdownInterval = setInterval(updateCountdown, 1000);
 
+  function progressYears(passed) {
+    var passedYears = passed / (60 * 60 * 24 * 365);
+    var progress = (passedYears / AGE_LIMIT) * 100;
+
+    return `
+          <tr>
+            <td colspan="3">
+              <div class="progress" style="height: 30px;">
+            <div class="progress-bar bg-primary passed-progress-bar-border" role="progressbar" style="width: ${progress}%; line-height: 30px;" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"><strong>Passed ${progress.toFixed(2)}%</strong></div>
+            <div class="progress-bar custom-progress-bar left-progress-bar-border" role="progressbar" style="width: ${100 - progress}%; line-height: 30px;" aria-valuenow="${100 - progress}" aria-valuemin="0" aria-valuemax="100"><strong>Left ${(100 - progress).toFixed(2)}%</strong></div>
+              </div>
+            </td>
+          </tr>
+        `;
+  }
