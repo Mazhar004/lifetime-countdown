@@ -20,6 +20,11 @@
 <body>
   <div class="container">
     <h1>LifeTime Countdown <small style="font-size: 16px;">(AGE limit considering {VARIABLE} years)</small></h1>
+    <div class="form-group">
+      <label for="ageLimit" style="font-weight: bold; font-size: 16px;">Set age limit:</label>
+      <input type="range" id="ageLimit" class="form-control" min="1" max="100"
+        oninput="ageLimitValue.value = ageLimit.value">
+    </div>
   </div>
 
   <!-- Custom JS -->
