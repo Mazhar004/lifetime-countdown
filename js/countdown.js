@@ -11,7 +11,7 @@ document.getElementById('ageLimit').addEventListener('input', function (event) {
 document.getElementById('birthdayForm').addEventListener('submit', function (event) {
   event.preventDefault();
   AGE_LIMIT = parseInt(document.getElementById('ageLimit').value);
-
+  
   if (countdownInterval) {
     clearInterval(countdownInterval);
   }
@@ -78,3 +78,78 @@ document.getElementById('birthdayForm').addEventListener('submit', function (eve
       result += `<span class="badge badge-warning">${seconds} Seconds</span>`;
     }
     return result.trim();
+  }
+
+  function updateCountdown() {
+    var currentDate = new Date();
+    var timeDifference = futureDate.getTime() - currentDate.getTime();
+
+    if (timeDifference <= 0) {
+      clearInterval(countdownInterval);
+      countdownElement.innerHTML = `<p class="text-success">Congratulations on reaching 70 years!</p>`;
+      return;
+    }
+
+    var totalSecondsLeft = Math.ceil(timeDifference / 1000);
+    var leftTimeMain = convertTimeToYearsMonthsDaysHoursMinutesSeconds(totalSecondsLeft, true);
+    var leftTimeRow = convertTimeToYearsMonthsDaysHoursMinutesSeconds(totalSecondsLeft);
+
+    var totalSecondsPassed = yearsPassed * 365 * 24 * 60 * 60 + monthsPassed * 30.44 * 24 * 60 * 60 + daysPassed * 24 * 60 * 60 + hoursPassed * 60 * 60 + minutesPassed * 60 + secondsPassed;
+    var passedTime = convertTimeToYearsMonthsDaysHoursMinutesSeconds(totalSecondsPassed);
+
+    function generateTableRow(label, passed, left) {
+      return `
+          <tr>
+            <td class="font-weight-bold">${label}</td>
+            <td>${passed}</td>
+            <td>${left}</td>
+          </tr>
+        `;
+    }
+
+    var sleepingLeft = convertTimeToYearsMonthsDaysHoursMinutesSeconds(Math.round(totalSecondsLeft * 0.333));
+    var educationAndWorkLeft = convertTimeToYearsMonthsDaysHoursMinutesSeconds(Math.round(totalSecondsLeft * 0.1456));
+    var commuteAndTransportationLeft = convertTimeToYearsMonthsDaysHoursMinutesSeconds(Math.round(totalSecondsLeft * 0.0207));
+    var cookingAndEatingLeft = convertTimeToYearsMonthsDaysHoursMinutesSeconds(Math.round(totalSecondsLeft * 0.0415));
+    var householdDutiesAndResponsibilitiesLeft = convertTimeToYearsMonthsDaysHoursMinutesSeconds(Math.round(totalSecondsLeft * 0.0415));
+    var bathroomHygieneLeft = convertTimeToYearsMonthsDaysHoursMinutesSeconds(Math.round(totalSecondsLeft * 0.0312));
+    var freeTimeLeft = convertTimeToYearsMonthsDaysHoursMinutesSeconds(Math.round(totalSecondsLeft * 0.3865));
+
+    var sleepingPassed = convertTimeToYearsMonthsDaysHoursMinutesSeconds(Math.round(totalSecondsPassed * 0.333));
+    var educationAndWorkPassed = convertTimeToYearsMonthsDaysHoursMinutesSeconds(Math.round(totalSecondsPassed * 0.1456));
+    var commuteAndTransportationPassed = convertTimeToYearsMonthsDaysHoursMinutesSeconds(Math.round(totalSecondsPassed * 0.0207));
+    var cookingAndEatingPassed = convertTimeToYearsMonthsDaysHoursMinutesSeconds(Math.round(totalSecondsPassed * 0.0415));
+    var householdDutiesAndResponsibilitiesPassed = convertTimeToYearsMonthsDaysHoursMinutesSeconds(Math.round(totalSecondsPassed * 0.0415));
+    var bathroomHygienePassed = convertTimeToYearsMonthsDaysHoursMinutesSeconds(Math.round(totalSecondsPassed * 0.0312));
+    var freeTimePassed = convertTimeToYearsMonthsDaysHoursMinutesSeconds(Math.round(totalSecondsPassed * 0.3865));
+
+    countdownElement.innerHTML = `
+        <div class="row">
+           <div class="col">
+           
+            <table class="table table-striped">
+            <tr style="font-size:24px; text-align: center;">
+              <td colspan="3">${leftTimeMain}</td>
+            </tr>
+            
+          
+              ${progressYears(totalSecondsPassed)}
+              <tr>
+                <th class="font-weight-bold" style="font-size: 24px;">Field</th>
+                <th class="font-weight-bold" style="font-size: 24px;">Time Passed</th>
+                <th class="font-weight-bold" style="font-size: 24px;">Time Left</th>
+              </tr>
+              ${generateTableRow("Total Time", passedTime, leftTimeRow)}
+              ${generateTableRow("Sleeping", sleepingPassed, sleepingLeft)}
+              ${generateTableRow("Education and Work", educationAndWorkPassed, educationAndWorkLeft)}
+              ${generateTableRow("Cooking and Eating", cookingAndEatingPassed, cookingAndEatingLeft)}
+              ${generateTableRow("Bathroom and Hygiene", bathroomHygienePassed, bathroomHygieneLeft)}
+              ${generateTableRow("Commute and Transportation", commuteAndTransportationPassed, commuteAndTransportationLeft)}
+              ${generateTableRow("Household Duties and Responsibilities", householdDutiesAndResponsibilitiesPassed, householdDutiesAndResponsibilitiesLeft)}
+              ${generateTableRow("Free Time", freeTimePassed, freeTimeLeft)}
+              </table>
+          </div>
+        </div>
+            `;
+  }
+});
